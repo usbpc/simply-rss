@@ -1,8 +1,8 @@
 # simply-rss - a simple RSS Feed reader for Kotlin
 
-[![](https://jitpack.io/v/usbpc/simply-rss.svg)](https://jitpack.io/#usbpc/simply-rss)
+[![](https://jitpack.io/v/xyz.usbpc/simply-rss.svg)](https://jitpack.io/#xyz.usbpc/simply-rss)
 
-Builds for this library are available on [jitpack](https://jitpack.io/#usbpc/simply-rss).
+Builds for this library are available on [jitpack](https://jitpack.io/#xyz.usbpc/simply-rss).
 
 # Usage
 The main thing to use is the RSSFeedReader class.
