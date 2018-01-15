@@ -1,4 +1,4 @@
-package xyz.usbpc.rssr
+package xyz.usbpc.simplyrss
 
 import org.apache.commons.codec.binary.Hex
 import org.jsoup.Connection
@@ -26,7 +26,7 @@ interface RSSFeedData {
     var lastChecked: ZonedDateTime
 }
 
-class MemoryRSSFeedData(override var lastChecked: ZonedDateTime = ZonedDateTime.from(Instant.ofEpochSecond(0)) , override var hashes: List<String> = emptyList()) : RSSFeedData
+class MemoryRSSFeedData(override var lastChecked: ZonedDateTime = ZonedDateTime.parse("1970-01-01T00:00:00Z") , override var hashes: List<String> = emptyList()) : RSSFeedData
 
 class RSSFeedReader(val url: String, val data: RSSFeedData = MemoryRSSFeedData()) {
     fun getNewItems() : List<RSSItem> {
@@ -88,7 +88,7 @@ class RSSItem(val element: Element, val parent: RSSChannel) {
     private fun getTextFromSelector(selector: String): String {
         val tokens = selector.split(':')
         return if (tokens.size < 2) {
-           getTextFromSelector(selector)
+           getElementText(selector)
         } else if (tokens[0] == "channel"){
             parent.getElementText(tokens[1])
         } else if (tokens[0] == "item"){
@@ -100,7 +100,7 @@ class RSSItem(val element: Element, val parent: RSSChannel) {
     fun getElementText(selector: String): String = element.selectFirst(selector)?.text() ?: "null"
 }
 
-class RSSReaderTimer(val defaultDelay: Int = 15, val respectTTL: Boolean = true) {
+class RSSReaderTimer(val defaultDelay: Int = 15) {
     private val timer = Timer()
     fun addFeed(reader: RSSFeedReader, delay: Int = defaultDelay, block: (RSSItem) -> Unit) {
         timer.schedule(delay*1000*60L, 15*1000*60) {
