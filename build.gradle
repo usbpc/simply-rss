@@ -9,10 +9,12 @@ buildscript {
     }
 }
 
-group 'xyz.usbpc.testing'
+group 'xyz.usbpc.simply-rss'
 version '1.0-SNAPSHOT'
 
+apply plugin: 'java-library'
 apply plugin: 'kotlin'
+apply plugin: 'maven-publish'
 
 repositories {
     mavenCentral()
@@ -22,8 +24,8 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.11.2'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation group: 'commons-codec', name: 'commons-codec', version: '1.11'
-
-    apiElements "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    //compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 compileKotlin {
