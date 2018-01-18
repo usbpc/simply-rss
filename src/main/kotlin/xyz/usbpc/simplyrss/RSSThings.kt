@@ -64,6 +64,19 @@ class RSSFeedReader(val url: String, val data: RSSFeedData = MemoryRSSFeedData()
         val rssChannel = RSSChannel(channel)
         return newElements.map { RSSItem(it, rssChannel) }
     }
+
+
+}
+
+fun RSSFeedReader.isValidRSS() = isValidRSS(url)
+
+fun isValidRSS(url: String) : Boolean {
+    val result = Jsoup.connect(url)
+            .method(Connection.Method.GET)
+            .execute()
+    if (result.statusCode() != 200) return false
+    if (result.parse().selectFirst("rss > channel") == null) return false
+    return true
 }
 
 class RSSChannel(val element: Element) {
