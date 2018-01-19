@@ -53,7 +53,7 @@ class RSSFeedReader(val url: String, val data: RSSFeedData = MemoryRSSFeedData()
 
         val itemsWithHash = if (items.first().selectFirst("pubDate") != null) {
             val rssChannel = RSSChannel(channel)
-            return items.filter { it.selectFirst("pubDate").text().toDate().isAfter(lastChecked) }.map { RSSItem(it, rssChannel) }
+            return items.filter { it.selectFirst("pubDate").text().toDate().isAfter(lastChecked) }.map { RSSItem(it, rssChannel) }.asReversed()
         } else if (items.first().selectFirst("guid") != null) {
             items.map { it to it.select("guid").text().md5() }
         } else {
@@ -62,7 +62,7 @@ class RSSFeedReader(val url: String, val data: RSSFeedData = MemoryRSSFeedData()
         val newElements = itemsWithHash.filter {(_, it) -> it !in data.hashes }.map { (it, _) -> it }
         data.hashes = itemsWithHash.map { (_, it) -> it }
         val rssChannel = RSSChannel(channel)
-        return newElements.map { RSSItem(it, rssChannel) }
+        return newElements.map { RSSItem(it, rssChannel) }.asReversed()
     }
 
 
