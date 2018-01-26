@@ -51,10 +51,10 @@ class RSSFeedReader(val url: String, val data: RSSFeedData = MemoryRSSFeedData()
         //At this point we either have something new or I hate this RSS feed
         val items = channel.select("channel > item")
 
-        val itemsWithHash = if (items.first().selectFirst("pubDate") != null) {
+        val itemsWithHash = if (items.all {it.selectFirst("pubDate") != null}) {
             val rssChannel = RSSChannel(channel)
             return items.filter { it.selectFirst("pubDate").text().toDate().isAfter(lastChecked) }.map { RSSItem(it, rssChannel) }.asReversed()
-        } else if (items.first().selectFirst("guid") != null) {
+        } else if (items.all{it.selectFirst("guid") != null}) {
             items.map { it to it.select("guid").text().md5() }
         } else {
             items.map { it to it.select("link").text().md5() }
